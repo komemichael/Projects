@@ -1,0 +1,104 @@
+//------------Monitor Solution------------//
+
+
+bool isFile1Processed = false;
+
+bool isFile2Processed = false;
+
+
+File F1;
+File F2;
+
+
+
+pthread_mutex_t M1;
+pthread_mutex_t M2;
+
+pthread_mutex_t process;
+
+pthreac_cond_t C1;
+pthreac_cond_t C2;
+
+
+
+
+void Collectdata()
+{
+
+	while (true)
+	{
+		pthread_mutex_lock(M1);
+		F1 = collectData();
+		saveFile1(F1);
+		
+		
+		pthread_mutex_lock(process);
+		isFileProcessed = false;
+		pthread_mutex_unlock(process);
+
+		pthread_cond_signal(C1);
+		
+		pthread_mutex_unlock(M1);
+	}
+}
+
+void ProcessFile()
+{
+	while (True)
+	{
+		pthread_lock(M1);
+		
+		while (isFile1Processed != true)
+		{
+			pthread_cond_wait(C1, M1);
+
+			pthread_lock(F2);
+
+			F1 = getFileF1();
+			F2 = preProcessFileF1(F1);
+			saveFile2(F2);
+		
+			pthread_mutex_lock(process);
+			isFileProcessed = false;
+			pthread_mutex_unlock(process);
+			pthread_cond_signal(C2);
+		}
+		
+		pthread_mutex_unlock(M2);
+	}
+}
+
+
+void UploadFile()
+{
+	while(True)
+	{
+		pthread_mutex_lock(M2);
+		pthread_Mutex_lock(process);
+
+		while(isFile2Processed != true)
+		{
+			pthread_cond_wait(C2,M2);	
+			F2 = getFileF2();
+			Upload(F2);
+		}
+
+		pthread_Mutex_unlock(process);
+		pthread_mutex_unlock(M2);
+	}
+}
+
+
+void main()
+{
+	pthread_cond_init(C1);
+	pthread_cond_init(C2);
+
+	pthread_t tid[3];
+
+	createThread(CollectData);
+	createThread(ProcessFile);
+	createThread(UploadFile);
+}
+
+

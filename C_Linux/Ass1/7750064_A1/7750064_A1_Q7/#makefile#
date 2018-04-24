@@ -1,0 +1,2 @@
+shell7: shell_A1_Q7.c
+	gcc -o shell7 shell_A1_Q7.c -lpthread -w

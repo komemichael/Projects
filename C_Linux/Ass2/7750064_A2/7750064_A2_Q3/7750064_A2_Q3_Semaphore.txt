@@ -1,0 +1,68 @@
+//-------Semaphore Solution-------//
+
+Semaphore S1;
+Semaphore S2;
+
+File F1;
+File F2;
+
+void P(Semaphore S)
+{
+	while(S == 0);
+	S--;
+}
+
+void V(Semaphore S)
+{
+	S++;
+}
+
+void Collectdata()
+{
+	while (True)
+	{
+		F1 = collectData();
+		saveFile1(F1);
+		V(S2);
+	}
+}
+
+void ProcessFile()
+{
+	while (True)
+	{
+		P(S1);
+		F1 = getFileF1();
+		F2 = preProcessFileF1(F1);
+		saveFile2(F2);
+		V(S2);
+	}
+}
+
+void UploadFile()
+{
+	while (True)
+	{
+		P(S2);
+		F2 = getFileF2();
+		Upload(F2);
+	}
+}
+
+
+void main(int argC,char *argV[])
+{
+	pthread_t tid[3];
+	
+	S1 = 0;
+	S2 = 0;
+
+	createThread(CollectData);
+	createThread(ProcessFile);
+	createThread(UploadFile);
+	
+	pthreadExit();
+}
+
+
+

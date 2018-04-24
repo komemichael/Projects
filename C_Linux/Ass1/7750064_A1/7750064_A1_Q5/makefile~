@@ -1,0 +1,2 @@
+shell5: shell_A1_Q5.c
+	gcc -o shell5 shell_A1_Q5.c

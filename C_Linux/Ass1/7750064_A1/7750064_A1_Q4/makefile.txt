@@ -1,0 +1,2 @@
+shell4: shell_A1_Q4.c
+	gcc -o shell4 shell_A1_Q4.c

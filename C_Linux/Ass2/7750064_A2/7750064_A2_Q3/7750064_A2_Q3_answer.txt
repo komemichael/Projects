@@ -1,0 +1,26 @@
+If one or more of the later processes was periodicically delayed for a longer period of time,
+
+The semaphore solution will need to be changed by adding a third semaphore for signaling thread
+1
+ from thread 3, else thread 1 doesnt get to run again after the first time except it is signalled
+ 
+by thread three by the third semaphore. This is implemented by putting the initial signaling outside
+ 
+before the while loop and then the the Signalling can happen after wards.
+
+FOr the monitor solution,
+ we add another condition variable for signalling the first process after
+the third process is done but
+ initially signal it before the while loop so we don't encounter a dead
+lock at the begining. 
+
+It is
+ necessary to deal with this issue because if one process processes file faster than others,
+there
+ would be some unprocessed file skipped. For example, if the forst process periodically run
+faster
+ than the other processes, then there would be a lof of new files for the second process to process
+and 
+the third as well and it could lead to memory overflow. This way keeps the flow in an orgarnized fashion.
+
+And we would know the flow of the program.

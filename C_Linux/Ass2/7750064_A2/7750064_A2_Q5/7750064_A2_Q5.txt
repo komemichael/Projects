@@ -1,0 +1,9 @@
+Pythos R lock objects also called reentrant lock is a synchronization primitive. A thread can acquire this primitive multiple times. It uses an owning method to acquire owniership of the lock in which case, the lock is owned by some threads. It also uses recurssion level to keep track of locked state like semaphores in C.
+
+There are two methods for the RLock feature named acquire() and release(). This combination is nestable.
+
+Acquire is used to own a lock and release is used to release the lock for other threads to use and the recurssion level increase. This could be a blocking or non blocking process and is specified by the parameter to this function. The recurssion level is used to keep track of its rank in the hold wait queue. If the blocked variable is set and another thread have ownership of the lock then it blocks. Just like try lock method for mutexes in C. If the blocking method is false then then do not  block and return. 
+
+Release is used to release the lock and the recurssion level is decremented. If the recursion level is 0 that means no thread is waiting on the lock else then only one of the ready threads are allowed to acquire the lock. This method is only called when a thread owns the lock.
+
+This is similar to the pthread wait and signal and also p thread lock and unlock all in the same object. Therefore an example where they might be useful is when signalling and mutex operations are needed at the same time for example when a thread need to acqure a lock multiple times and order of execution is desired. In this case only the calling locking thread is allowed to release the lock and is more prefered than the basic Lock function where any thread is allowed to release the lock.
